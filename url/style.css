@@ -1,0 +1,93 @@
+@import url("../cidr/style.css");
+
+.url-header,
+.url-shell,
+.url-footer {
+  width: min(1120px, calc(100% - 40px));
+  margin: 0 auto;
+}
+
+.url-header {
+  padding: 28px 0 18px;
+}
+
+.url-shell {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  padding-bottom: 28px;
+}
+
+.url-form {
+  display: grid;
+  gap: 12px;
+}
+
+textarea {
+  width: 100%;
+  min-height: 180px;
+  resize: vertical;
+  padding: 12px;
+  color: var(--text);
+  background: rgba(7, 20, 33, 0.72);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  font: 0.9rem/1.55 Consolas, "Courier New", monospace;
+}
+
+textarea:focus {
+  outline: 2px solid rgba(118, 199, 255, 0.42);
+  outline-offset: 2px;
+}
+
+.url-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.url-form .quick-actions {
+  margin-top: 0;
+}
+
+.url-note {
+  margin: 16px 0 0;
+  font-size: 0.84rem;
+  line-height: 1.5;
+}
+
+#result-output {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.copy-button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.url-footer {
+  padding-bottom: 26px;
+}
+
+@media (max-width: 860px) {
+  .url-shell {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .url-header,
+  .url-shell,
+  .url-footer {
+    width: min(100% - 28px, 1120px);
+  }
+
+  .url-header {
+    padding-top: 22px;
+  }
+
+  .url-actions {
+    grid-template-columns: 1fr;
+  }
+}

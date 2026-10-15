@@ -2,7 +2,7 @@
 
 Statische, clientseitige Tool-Sammlung von Runlevel Labs.
 
-Enthalten sind kleine Werkzeuge für Wetter, DNS, IP-Check, CIDR-Berechnung, ASN-Lookup und Mail-Security. Die Tools können direkt über ihre jeweilige `index.html` aufgerufen werden; der Link zur Startseite ist nur eine Navigationhilfe.
+Enthalten sind kleine Werkzeuge für Wetter, DNS, IP-Check, CIDR-Berechnung, ASN-Lookup, Mail-Security, URL Encoder/Decoder, Unix-Zeitstempel-Konverter und JSON Tools. Die Tools können direkt über ihre jeweilige `index.html` aufgerufen werden; der Link zur Startseite ist nur eine Navigationhilfe.
 
 ## Lokal starten
 

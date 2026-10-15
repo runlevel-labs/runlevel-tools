@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Runlevel Labs - JSON Tools</title>
+  <meta name="description" content="JSON lokal im Browser prüfen, übersichtlich formatieren oder kompakt ausgeben.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../core/utilities.css">
+  <link rel="icon" type="image/png" href="../runlevel-labs-small.png">
+</head>
+<body>
+  <header class="json-header">
+    <nav class="top-nav" aria-label="Navigation"><a href="../index.html">Tools</a><span>JSON Tools</span></nav>
+    <div class="header-grid">
+      <div><p class="eyebrow">Runlevel Labs</p><h1>JSON Tools</h1><p class="sub">JSON prüfen, lesbar formatieren oder kompakt ausgeben.</p></div>
+      <div class="signal-panel" aria-label="Tool-Status">
+        <span id="signal-dot" class="signal-dot" aria-hidden="true"></span><strong>Status</strong>
+        <span id="status-text" role="status" aria-live="polite" aria-atomic="true">Bereit für die erste Prüfung.</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="json-shell technical-content">
+    <section class="panel" aria-labelledby="input-title">
+      <div class="panel-head"><div><h2 id="input-title">Eingabe</h2><p>JSON einfügen und die gewünschte Aktion wählen.</p></div><span id="status-badge" class="badge" aria-hidden="true">idle</span></div>
+      <form id="json-form" class="json-form">
+        <label for="json-input">JSON-Text</label>
+        <textarea id="json-input" name="json" rows="10" autocomplete="off" spellcheck="false"></textarea>
+        <div class="json-actions">
+          <button type="submit" name="action" value="check">Prüfen</button>
+          <button type="submit" name="action" value="pretty">Formatieren</button>
+          <button type="submit" name="action" value="compact">Kompakt</button>
+        </div>
+        <div class="quick-actions"><button id="clear-button" type="button">Leeren</button></div>
+      </form>
+      <p class="json-note">Formatierung mit zwei Leerzeichen. Zahlen, Zeichenketten und Schlüssel bleiben erhalten. Kommentare und abschließende Kommas gehören nicht zu gültigem JSON.</p>
+      <p class="json-note">Bis zu 1.000.000 Zeichen; Formatierung bis zu 256 Verschachtelungsebenen. Die Verarbeitung erfolgt vollständig im Browser. Eingaben werden weder gespeichert noch übertragen.</p>
+    </section>
+
+    <section class="panel" aria-labelledby="result-title">
+      <h2 id="result-title">Ergebnis</h2>
+      <pre id="result-output">Noch keine Prüfung.</pre>
+      <button id="copy-button" class="copy-button" type="button" data-copy-target="#result-output" disabled>Ergebnis kopieren</button>
+    </section>
+  </main>
+  <footer class="json-footer"><small class="footer-copy">&copy; 2026 Tom &amp; Gina &middot; Runlevel Labs</small></footer>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

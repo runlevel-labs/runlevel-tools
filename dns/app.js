@@ -12,6 +12,7 @@ const answersBody = document.querySelector("#answers");
 const rawOutput = document.querySelector("#raw-output");
 const quickActions = document.querySelectorAll("[data-domain]");
 const stateKey = "dns:lastLookup";
+let latestLookupId = 0;
 
 const typeCodes = {
   A: 1,
@@ -105,6 +106,7 @@ async function lookup(domain, type) {
 
 async function handleLookup(event) {
   event.preventDefault();
+  const lookupId = ++latestLookupId;
 
   const domain = cleanDomain(domainInput.value);
   const type = recordType.value;
@@ -112,7 +114,7 @@ async function handleLookup(event) {
   domainInput.value = domain;
   Kernel.state.set(stateKey, { domain, type });
 
-  if (!isValidDomain(domain)) {
+  if (!isValidDomain(domain, { allowUnderscores: true })) {
     setStatus("Bitte eine gültige Domain eingeben.", "warn");
     setEmpty("Keine Abfrage gestartet.");
     rawOutput.textContent = "Ungültige Domain.";
@@ -125,6 +127,10 @@ async function handleLookup(event) {
 
   try {
     const data = await lookup(domain, type);
+    if (lookupId !== latestLookupId) {
+      return;
+    }
+
     const rcode = rcodes[data.Status] || `RCODE ${data.Status}`;
     const records = data.Answer || [];
 
@@ -132,6 +138,10 @@ async function handleLookup(event) {
     renderAnswers(records);
     rawOutput.textContent = JSON.stringify(data, null, 2);
   } catch (error) {
+    if (lookupId !== latestLookupId) {
+      return;
+    }
+
     setStatus(error.message || "DNS-Abfrage fehlgeschlagen.", "SERVFAIL");
     setEmpty("Keine Daten empfangen.");
     rawOutput.textContent = error.message;

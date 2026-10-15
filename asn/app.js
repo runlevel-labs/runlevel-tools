@@ -10,6 +10,7 @@ const statusBadge = document.querySelector("#status-badge");
 const signalDot = document.querySelector("#signal-dot");
 const rawOutput = document.querySelector("#raw-output");
 const stateKey = "asn:lastLookup";
+let latestLookupId = 0;
 
 const fields = {
   asnNumber: document.querySelector("#asn-number"),
@@ -207,6 +208,7 @@ function renderResult(asn, results) {
 
 async function handleLookup(event) {
   event.preventDefault();
+  const lookupId = ++latestLookupId;
 
   const asn = normalizeAsn(asnInput.value);
   asnInput.value = asn ? `AS${asn}` : "";
@@ -227,6 +229,10 @@ async function handleLookup(event) {
     fetchRipestat("announced-prefixes", asn),
     fetchRipestat("asn-neighbours", asn),
   ]);
+  if (lookupId !== latestLookupId) {
+    return;
+  }
+
   const results = { overview, prefixes, neighbours };
   const loadedCount = Object.values(results).filter((result) => result.status === "fulfilled").length;
 

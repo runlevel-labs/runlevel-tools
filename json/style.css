@@ -1,0 +1,66 @@
+@import url("../url/style.css");
+
+.json-header,
+.json-shell,
+.json-footer {
+  width: min(1120px, calc(100% - 40px));
+  margin: 0 auto;
+}
+
+.json-header {
+  padding: 28px 0 18px;
+}
+
+.json-shell {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  padding-bottom: 28px;
+}
+
+.json-form {
+  display: grid;
+  gap: 12px;
+}
+
+.json-actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.json-form .quick-actions {
+  margin-top: 0;
+}
+
+.json-note {
+  margin: 16px 0 0;
+  font-size: 0.84rem;
+  line-height: 1.5;
+}
+
+.json-footer {
+  padding-bottom: 26px;
+}
+
+@media (max-width: 860px) {
+  .json-shell {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .json-header,
+  .json-shell,
+  .json-footer {
+    width: min(100% - 28px, 1120px);
+  }
+
+  .json-header {
+    padding-top: 22px;
+  }
+
+  .json-actions {
+    grid-template-columns: 1fr;
+  }
+}

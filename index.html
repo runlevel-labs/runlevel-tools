@@ -6,6 +6,7 @@
   <title>Runlevel Labs - Tools</title>
   <meta name="description" content="Statisches Runlevel Labs Dashboard für Werkzeuge und kleine technische Helfer.">
   <link rel="stylesheet" href="style.css?v=system-map-1">
+  <link rel="icon" type="image/png" href="runlevel-labs-small.png">
 </head>
 <body>
   <header class="tool-header">
@@ -81,6 +82,36 @@
       <span class="tool-card__status">bereit</span>
     </a>
 
+    <a class="tool-card tool-card--active" href="url/index.html" data-tool="url">
+      <span class="tool-card__icon" aria-hidden="true">%</span>
+      <span class="tool-card__body">
+        <strong>URL Encoder/Decoder</strong>
+        <span>URL-Bestandteile kodieren und dekodieren</span>
+        <span class="tool-card__meta"><span>Lokal</span><span>Offline</span><span>Text</span></span>
+      </span>
+      <span class="tool-card__status">bereit</span>
+    </a>
+
+    <a class="tool-card tool-card--active" href="time/index.html" data-tool="time">
+      <span class="tool-card__icon" aria-hidden="true">⏱</span>
+      <span class="tool-card__body">
+        <strong>Unix-Zeitstempel</strong>
+        <span>Zeitstempel und Datum umwandeln</span>
+        <span class="tool-card__meta"><span>Lokal</span><span>Offline</span><span>UTC</span></span>
+      </span>
+      <span class="tool-card__status">bereit</span>
+    </a>
+
+    <a class="tool-card tool-card--active" href="json/index.html" data-tool="json">
+      <span class="tool-card__icon" aria-hidden="true">{}</span>
+      <span class="tool-card__body">
+        <strong>JSON Tools</strong>
+        <span>JSON prüfen, formatieren und kompakt ausgeben</span>
+        <span class="tool-card__meta"><span>Lokal</span><span>Offline</span><span>JSON</span></span>
+      </span>
+      <span class="tool-card__status">bereit</span>
+    </a>
+
     <section class="system-map" aria-labelledby="routing-title">
       <div class="system-map__head">
         <h2 id="routing-title">Tool-Übersicht</h2>
@@ -117,6 +148,21 @@
           <span class="system-map__icon" aria-hidden="true">@</span>
           <strong>Mail Security</strong>
           <span>Security / E-Mail</span>
+        </li>
+        <li class="system-map__node">
+          <span class="system-map__icon" aria-hidden="true">%</span>
+          <strong>URL Tools</strong>
+          <span>Text / Kodierung</span>
+        </li>
+        <li class="system-map__node">
+          <span class="system-map__icon" aria-hidden="true">⏱</span>
+          <strong>Zeitstempel</strong>
+          <span>Datum / Zeit</span>
+        </li>
+        <li class="system-map__node">
+          <span class="system-map__icon" aria-hidden="true">{}</span>
+          <strong>JSON Tools</strong>
+          <span>Daten / Format</span>
         </li>
       </ul>
     </section>

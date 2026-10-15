@@ -49,10 +49,41 @@ function setLookupMode(ip) {
 function isValidIpAddress(value) {
   const ipv4 =
     /^(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}$/;
-  const ipv6 =
-    /^(?=.*:)([0-9a-fA-F]{0,4}:){2,7}[0-9a-fA-F]{0,4}(%.+)?$/;
+  if (ipv4.test(value)) {
+    return true;
+  }
 
-  return ipv4.test(value) || ipv6.test(value);
+  const addressParts = value.split("%");
+  if (addressParts.length > 2 ||
+      (addressParts.length === 2 && !/^[0-9a-z_.:-]+$/i.test(addressParts[1]))) {
+    return false;
+  }
+
+  let address = addressParts[0];
+  if (!address.includes(":")) {
+    return false;
+  }
+
+  if (address.includes(".")) {
+    const lastColon = address.lastIndexOf(":");
+    if (!ipv4.test(address.slice(lastColon + 1))) {
+      return false;
+    }
+    // Ein eingebetteter IPv4-Endteil belegt zwei 16-Bit-Gruppen.
+    address = address.slice(0, lastColon + 1) + "0:0";
+  }
+
+  const parts = address.split("::");
+  if (parts.length > 2) {
+    return false;
+  }
+
+  const groups = parts.flatMap((part) => part === "" ? [] : part.split(":"));
+  if (!groups.every((group) => /^[0-9a-f]{1,4}$/i.test(group))) {
+    return false;
+  }
+
+  return parts.length === 2 ? groups.length < 8 : groups.length === 8;
 }
 
 function getLookupIp() {
@@ -161,6 +192,15 @@ async function loadIpData(ip = null) {
   if (lookupIp && !isValidIpAddress(lookupIp)) {
     renderError(new Error("ungültige IP-Adresse"));
     setStatus("ungültige IP-Adresse", "ERROR");
+    setButtonsDisabled(false);
+    return;
+  }
+
+  if (lookupIp && lookupIp.includes("%")) {
+    const error = new Error("IPv6-Zonenkennungen gelten nur lokal; keine öffentliche IP-Abfrage möglich.");
+    renderError(error);
+    setText(sourceValue, "keine externe Abfrage");
+    setStatus(error.message, "ERROR");
     setButtonsDisabled(false);
     return;
   }

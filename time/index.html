@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Runlevel Labs - Unix-Zeitstempel</title>
+  <meta name="description" content="Unix-Zeitstempel und Datum lokal im Browser umwandeln: Sekunden, Millisekunden, UTC und lokale Zeit.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../core/utilities.css">
+  <link rel="icon" type="image/png" href="../runlevel-labs-small.png">
+</head>
+<body>
+  <header class="time-header">
+    <nav class="top-nav" aria-label="Navigation"><a href="../index.html">Tools</a><span>Unix-Zeitstempel</span></nav>
+    <div class="header-grid">
+      <div><p class="eyebrow">Runlevel Labs</p><h1>Unix-Zeitstempel</h1><p class="sub">Zeitstempel und Datum umwandeln – mit UTC und lokaler Zeit.</p></div>
+      <div class="signal-panel" aria-label="Tool-Status">
+        <span id="signal-dot" class="signal-dot" aria-hidden="true"></span><strong>Status</strong>
+        <span id="status-text" role="status" aria-live="polite" aria-atomic="true">Bereit für die erste Umwandlung.</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="time-shell technical-content">
+    <section class="panel" aria-labelledby="timestamp-title">
+      <h2 id="timestamp-title">Zeitstempel → Datum</h2><p>Einheit ausdrücklich wählen. Negative Werte sind ebenfalls möglich.</p>
+      <form id="timestamp-form" class="time-form" novalidate>
+        <label><span>Unix-Zeitstempel</span><input id="timestamp-input" name="timestamp" type="text" inputmode="text" maxlength="32" autocomplete="off" spellcheck="false"></label>
+        <label><span>Einheit</span><select id="unit-input" name="unit"><option value="seconds">Sekunden</option><option value="milliseconds">Millisekunden</option></select></label>
+        <button type="submit">In Datum umwandeln</button>
+      </form>
+      <p class="time-note">Sekunden erlauben bis zu drei Nachkommastellen; Millisekunden sind ganze Zahlen. Unix-Zeitstempel zählen ab dem 1. Januar 1970, 00:00:00 UTC.</p>
+    </section>
+
+    <section class="panel" aria-labelledby="date-title">
+      <h2 id="date-title">Datum → Zeitstempel</h2><p>Datum und Uhrzeit in der gewählten Zeitzone interpretieren.</p>
+      <form id="date-form" class="time-form" novalidate>
+        <label><span>Datum und Uhrzeit</span><input id="date-input" name="date" type="datetime-local" step="0.001" min="0001-01-01T00:00" max="9999-12-31T23:59:59.999"></label>
+        <label><span>Zeitzone der Eingabe</span><select id="zone-input" name="zone"><option value="utc">UTC</option><option value="local">Lokale Zeit</option></select></label>
+        <button type="submit">In Zeitstempel umwandeln</button>
+      </form>
+      <p class="time-note">Lokale Browser-Zeitzone: <strong id="local-zone"></strong>. Bei doppelten lokalen Uhrzeiten wird der frühere Zeitpunkt verwendet; nicht existente Uhrzeiten werden abgewiesen.</p>
+    </section>
+
+    <section class="panel time-result" aria-labelledby="result-title">
+      <div class="panel-head"><h2 id="result-title">Ergebnis</h2><span id="status-badge" class="badge" aria-hidden="true">idle</span></div>
+      <dl class="time-values">
+        <div><dt>Unix-Sekunden</dt><dd id="result-seconds">-</dd></div>
+        <div><dt>Unix-Millisekunden</dt><dd id="result-milliseconds">-</dd></div>
+        <div><dt>UTC / ISO 8601</dt><dd id="result-utc">-</dd></div>
+        <div><dt>Lokale Zeit</dt><dd id="result-local">-</dd></div>
+      </dl>
+      <button id="copy-button" class="copy-button" type="button" data-copy-target="#summary-output" disabled>Ergebnis kopieren</button>
+      <div class="quick-actions"><button id="clear-button" type="button">Leeren</button></div>
+      <pre id="summary-output" hidden>Noch keine Umwandlung.</pre>
+      <p class="time-note">Die Verarbeitung erfolgt vollständig im Browser. Eingaben werden weder gespeichert noch übertragen.</p>
+    </section>
+  </main>
+  <footer class="time-footer"><small class="footer-copy">&copy; 2026 Tom &amp; Gina &middot; Runlevel Labs</small></footer>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

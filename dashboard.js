@@ -4,6 +4,10 @@ Kernel.init();
 
 document.querySelectorAll("[data-tool]").forEach((link) => {
   link.addEventListener("click", (event) => {
+    if (event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) {
+      return;
+    }
+
     try {
       event.preventDefault();
       Kernel.router.open(link.dataset.tool);

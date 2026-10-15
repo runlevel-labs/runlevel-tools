@@ -8,16 +8,18 @@ export function cleanDomain(value) {
     .toLowerCase();
 }
 
-export function isValidDomain(domain) {
+export function isValidDomain(domain, { allowUnderscores = false } = {}) {
   if (!domain || domain.length > 253 || domain.includes("..")) {
     return false;
   }
+
+  const labelPattern = allowUnderscores ? /^[a-z0-9_-]+$/i : /^[a-z0-9-]+$/i;
 
   return domain.split(".").every((label) => {
     return (
       label.length > 0 &&
       label.length <= 63 &&
-      /^[a-z0-9-]+$/i.test(label) &&
+      labelPattern.test(label) &&
       !label.startsWith("-") &&
       !label.endsWith("-")
     );

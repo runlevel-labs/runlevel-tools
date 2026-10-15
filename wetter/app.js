@@ -20,6 +20,7 @@ const rawOutput = document.querySelector("#raw-output");
 const locationMap = document.querySelector("#location-map");
 const quickActions = document.querySelectorAll("[data-location]");
 const stateKey = "weather:lastLookup";
+let latestLookupId = 0;
 
 const defaultLocationName = "Wuppertal";
 
@@ -311,6 +312,7 @@ function renderError(error, locationMessage = "Abfrage fehlgeschlagen") {
 
 async function loadWeather(event) {
   event?.preventDefault();
+  const lookupId = ++latestLookupId;
   const query = locationInput.value.trim() || defaultLocationName;
   locationInput.value = query;
   Kernel.state.set(stateKey, { location: query });
@@ -320,10 +322,21 @@ async function loadWeather(event) {
 
   try {
     const location = await geocodeLocation(query);
+    if (lookupId !== latestLookupId) {
+      return;
+    }
+
     const weather = await fetchWeather(location);
+    if (lookupId !== latestLookupId) {
+      return;
+    }
     renderWeather(location, weather);
     setStatus("Daten geladen", "OK");
   } catch (error) {
+    if (lookupId !== latestLookupId) {
+      return;
+    }
+
     const locationNotFound = error.message === "Ort nicht gefunden";
     renderError(error, locationNotFound ? "Ort nicht gefunden" : "Abfrage fehlgeschlagen");
     setStatus(locationNotFound ? "Ort nicht gefunden" : error.message || "Keine Daten verfügbar", "ERROR");

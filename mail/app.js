@@ -57,20 +57,20 @@ function normalizeTxt(data) {
     .replace(/^"|"$/g, "");
 }
 
-function getAnswers(response) {
-  return response?.Answer || [];
+function getAnswers(response, type) {
+  return (response?.Answer || []).filter((record) => record.type === type);
 }
 
 function getTxtRecords(response) {
-  return getAnswers(response).map((record) => normalizeTxt(record.data));
+  return getAnswers(response, 16).map((record) => normalizeTxt(record.data));
 }
 
 function findSpfRecord(response) {
-  return getTxtRecords(response).find((record) => record.toLowerCase().includes("v=spf1"));
+  return getTxtRecords(response).find((record) => /^v=spf1(?:\s|$)/i.test(record));
 }
 
 function findDmarcRecord(response) {
-  return getTxtRecords(response).find((record) => record.toLowerCase().includes("v=dmarc1"));
+  return getTxtRecords(response).find((record) => /^v=DMARC1(?:\s*;|$)/i.test(record));
 }
 
 function isNullMxRecord(record) {
@@ -82,7 +82,19 @@ async function lookup(domain, type) {
   url.searchParams.set("name", domain);
   url.searchParams.set("type", type);
 
-  return Kernel.api.fetchJSON(url);
+  const data = await Kernel.api.fetchJSON(url);
+
+  if (!Number.isInteger(data?.Status) || (data.Answer !== undefined && !Array.isArray(data.Answer))) {
+    throw new Error("Ungültige DNS-Antwort.");
+  }
+
+  if (data.Status !== 0 && data.Status !== 3) {
+    const rcodes = { 1: "FORMERR", 2: "SERVFAIL", 4: "NOTIMP", 5: "REFUSED" };
+    const rcode = rcodes[data.Status] || `RCODE ${data.Status}`;
+    throw new Error(`DNS-Abfrage für ${domain} (${type}) fehlgeschlagen: ${rcode}.`);
+  }
+
+  return data;
 }
 
 function renderMx(records) {
@@ -102,7 +114,7 @@ function renderMx(records) {
 }
 
 function renderResult(domain, mxData, txtData, dmarcData) {
-  const mxAnswers = getAnswers(mxData);
+  const mxAnswers = getAnswers(mxData, 15);
   const nullMxRecords = mxAnswers.filter(isNullMxRecord);
   const regularMxRecords = mxAnswers.filter((record) => !isNullMxRecord(record));
   const hasNullMx = nullMxRecords.length > 0;
@@ -179,9 +191,10 @@ async function handleLookup(event) {
     renderResult(domain, mxData, txtData, dmarcData);
   } catch (error) {
     setStatus(error.message || "DNS-Abfrage fehlgeschlagen.", "FAIL");
-    mxRecords.innerHTML = '<li class="empty">Keine Daten empfangen.</li>';
-    spfRecord.textContent = "Keine Daten empfangen.";
-    dmarcRecord.textContent = "Keine Daten empfangen.";
+    clearResults("Keine Daten empfangen.");
+    mxStatus.textContent = "Abfrage fehlgeschlagen";
+    spfStatus.textContent = "Abfrage fehlgeschlagen";
+    dmarcStatus.textContent = "Abfrage fehlgeschlagen";
     rawOutput.textContent = error.message;
   } finally {
     checkButton.disabled = false;

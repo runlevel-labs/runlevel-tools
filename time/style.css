@@ -1,0 +1,101 @@
+@import url("../cidr/style.css");
+
+.time-header,
+.time-shell,
+.time-footer {
+  width: min(1120px, calc(100% - 40px));
+  margin: 0 auto;
+}
+
+.time-header {
+  padding: 28px 0 18px;
+}
+
+.time-shell {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  padding-bottom: 28px;
+}
+
+.time-form {
+  display: grid;
+  gap: 12px;
+}
+
+select {
+  width: 100%;
+  min-height: 44px;
+  padding: 0 12px;
+  color: var(--text);
+  background: #0b1b2b;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  font: inherit;
+}
+
+select:focus {
+  outline: 2px solid rgba(118, 199, 255, 0.42);
+  outline-offset: 2px;
+}
+
+input[type="datetime-local"] {
+  min-width: 0;
+  color-scheme: dark;
+}
+
+.time-result {
+  grid-column: 1 / -1;
+}
+
+.time-values {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0;
+}
+
+.time-values div {
+  min-width: 0;
+  padding: 13px;
+  background: rgba(7, 20, 33, 0.42);
+  border: 1px solid rgba(130, 185, 255, 0.12);
+  border-radius: 12px;
+}
+
+.time-note {
+  margin: 16px 0 0;
+  font-size: 0.84rem;
+  line-height: 1.5;
+}
+
+.copy-button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.time-footer {
+  padding-bottom: 26px;
+}
+
+@media (max-width: 860px) {
+  .time-shell {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .time-header,
+  .time-shell,
+  .time-footer {
+    width: min(100% - 28px, 1120px);
+  }
+
+  .time-header {
+    padding-top: 22px;
+  }
+
+  .time-values {
+    grid-template-columns: 1fr;
+  }
+}

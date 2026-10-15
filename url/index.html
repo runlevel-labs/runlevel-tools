@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Runlevel Labs - URL Encoder/Decoder</title>
+  <meta name="description" content="URL-Bestandteile lokal im Browser kodieren und dekodieren.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../core/utilities.css">
+  <link rel="icon" type="image/png" href="../runlevel-labs-small.png">
+</head>
+<body>
+  <header class="url-header">
+    <nav class="top-nav" aria-label="Navigation">
+      <a href="../index.html">Tools</a>
+      <span>URL Encoder/Decoder</span>
+    </nav>
+    <div class="header-grid">
+      <div>
+        <p class="eyebrow">Runlevel Labs</p>
+        <h1>URL Encoder/Decoder</h1>
+        <p class="sub">Text für URL-Parameter kodieren oder wieder lesbar machen.</p>
+      </div>
+      <div class="signal-panel" aria-label="Tool-Status">
+        <span id="signal-dot" class="signal-dot" aria-hidden="true"></span>
+        <strong>Status</strong>
+        <span id="status-text" role="status" aria-live="polite" aria-atomic="true">Bereit für die erste Umwandlung.</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="url-shell technical-content">
+    <section class="panel" aria-labelledby="input-title">
+      <div class="panel-head">
+        <div><h2 id="input-title">Eingabe</h2><p>Einzelne URL-Bestandteile, etwa Suchbegriffe oder Parameterwerte, umwandeln.</p></div>
+        <span id="status-badge" class="badge" aria-hidden="true">idle</span>
+      </div>
+      <form id="url-form" class="url-form">
+        <label for="text-input">Text oder kodierter URL-Bestandteil</label>
+        <textarea id="text-input" name="text" rows="8" autocomplete="off" spellcheck="false"></textarea>
+        <div class="url-actions">
+          <button type="submit" name="action" value="encode">Kodieren</button>
+          <button type="submit" name="action" value="decode">Dekodieren</button>
+        </div>
+        <div class="quick-actions"><button id="clear-button" type="button">Leeren</button></div>
+      </form>
+      <p class="url-note">Leerzeichen werden als <code>%20</code> kodiert. Ein <code>+</code> bleibt beim Dekodieren ein <code>+</code>. Eine ganze URL wird einschließlich ihrer Trennzeichen kodiert.</p>
+      <p class="url-note">Die Verarbeitung erfolgt vollständig im Browser. Eingaben werden weder gespeichert noch übertragen.</p>
+    </section>
+
+    <section class="panel" aria-labelledby="result-title">
+      <h2 id="result-title">Ergebnis</h2>
+      <pre id="result-output">Noch keine Umwandlung.</pre>
+      <button id="copy-button" class="copy-button" type="button" disabled>Ergebnis kopieren</button>
+    </section>
+  </main>
+
+  <footer class="url-footer"><small class="footer-copy">&copy; 2026 Tom &amp; Gina &middot; Runlevel Labs</small></footer>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

@@ -1,15 +1,41 @@
 const prefix = "runlevel:";
+const memory = new Map();
+let storageAvailable = true;
 
 function keyFor(key) {
   return `${prefix}${key}`;
 }
 
 export function set(key, value) {
-  sessionStorage.setItem(keyFor(key), JSON.stringify(value));
+  const storageKey = keyFor(key);
+  const serialized = String(JSON.stringify(value));
+  memory.set(storageKey, serialized);
+
+  if (storageAvailable) {
+    try {
+      sessionStorage.setItem(storageKey, serialized);
+    } catch {
+      storageAvailable = false;
+    }
+  }
 }
 
 export function get(key) {
-  const value = sessionStorage.getItem(keyFor(key));
+  const storageKey = keyFor(key);
+  let value = memory.get(storageKey) ?? null;
+
+  if (storageAvailable) {
+    try {
+      value = sessionStorage.getItem(storageKey);
+      if (value === null) {
+        memory.delete(storageKey);
+      } else {
+        memory.set(storageKey, value);
+      }
+    } catch {
+      storageAvailable = false;
+    }
+  }
 
   if (value === null) {
     return null;
@@ -23,13 +49,30 @@ export function get(key) {
 }
 
 export function remove(key) {
-  sessionStorage.removeItem(keyFor(key));
+  const storageKey = keyFor(key);
+  memory.delete(storageKey);
+
+  if (storageAvailable) {
+    try {
+      sessionStorage.removeItem(storageKey);
+    } catch {
+      storageAvailable = false;
+    }
+  }
 }
 
 export function clear() {
-  Object.keys(sessionStorage)
-    .filter((key) => key.startsWith(prefix))
-    .forEach((key) => sessionStorage.removeItem(key));
+  memory.clear();
+
+  if (storageAvailable) {
+    try {
+      Object.keys(sessionStorage)
+        .filter((key) => key.startsWith(prefix))
+        .forEach((key) => sessionStorage.removeItem(key));
+    } catch {
+      storageAvailable = false;
+    }
+  }
 }
 
 export default {
